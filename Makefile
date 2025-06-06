@@ -11,7 +11,7 @@ SRCS_ASM += ./src/mem/memory.S
 SRCS_C += ./src/main.c
 
 SRCS_C += ./src/io/uart.c
-SRCS_C += ./src/io/printk.c
+SRCS_C += ./src/io/print.c
 # SRCS_C += ./src/io/plic.c
 # SRCS_C += ./src/io/trap_handler.c
 
