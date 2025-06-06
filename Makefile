@@ -7,7 +7,8 @@ SRCS_ASM += ./src/start.S
 # SRCS_ASM += ./src/trap/entry.S
 
 
-SRCS_C += ./src/kernel.c
+# SRCS_C += ./src/kernel.c
+SRCS_C += ./src/main.c
 
 SRCS_C += ./src/io/uart.c
 # SRCS_C += ./src/io/printf.c
@@ -36,6 +37,13 @@ SRCS_C += ./src/io/uart.c
 
 
 INCLUDE_DIRS += ./include/
+
+
+# 是否使用链接脚本（默认是 true）
+USE_LINKER_SCRIPT ?= true
+LDFILE = ./os.ld
+# LDFILE = ./link_script_riscv.ld
+LDFILE_GENERATED = ${LDFILE}.generated
 
 
 # 支持“是否启用系统调用”这一功能的可配置编译
@@ -85,10 +93,6 @@ QFLAGS += -bios none
 GDB = gdb-multiarch
 GDBINIT = ./gdbinit
 
-# 是否使用链接脚本（默认是 true）
-USE_LINKER_SCRIPT ?= true
-LDFILE = ./os.ld
-
 # 定义创建目录和删除文件的命令（用于兼容性和可维护性）
 MKDIR = mkdir -p
 RM = rm -rf
@@ -109,7 +113,7 @@ OBJS = ${OBJS_ASM} ${OBJS_C}
 # 默认使用链接脚本进行链接
 ifeq (${USE_LINKER_SCRIPT}, true)
     # 表示链接时使用这个生成的 linker script 来安排内存布局（非常关键，比如 .text, .data, .bss 等段放在哪些地址）
-    LDFLAGS = -T ${OUTPUT_PATH}/os.ld.generated
+    LDFLAGS = -T ${OUTPUT_PATH}/${LDFILE_GENERATED}
 else
     # 直接强行把代码段 .text 放到地址 0x8000_0000 起始
     LDFLAGS = -Ttext=0x80000000
@@ -142,7 +146,7 @@ ${ELF}: ${OBJS}
     # -x c：把 .ld 文件当作 C 源代码进行预处理，这样可以使用 #define 等预处理语法。
     # ${DEFS} 是一些宏定义（如 -DCONFIG_SYSCALL），会参与预处理。
 ifeq (${USE_LINKER_SCRIPT}, true)
-	${CC} -E -P -x c ${DEFS} ${CFLAGS} ${LDFILE} > ${OUTPUT_PATH}/os.ld.generated
+	${CC} -E -P -x c ${DEFS} ${CFLAGS} ${LDFILE} > ${OUTPUT_PATH}/${LDFILE_GENERATED}
 endif
 
     # 调用链接器（通过 GCC 调用）来生成 ELF 可执行文件

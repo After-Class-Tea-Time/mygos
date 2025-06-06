@@ -4,7 +4,7 @@
 #include "os.h"
 
 
-// extern void uart_init();  // 初始化串口
+extern void uart_init(); // 初始化串口
 // extern void plic_init();  // 初始化外部中断控制器
 // extern void page_init();  // 初始化分页
 // extern void trap_init();  // 初始化异常/中断处理

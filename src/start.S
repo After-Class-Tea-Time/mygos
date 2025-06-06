@@ -36,7 +36,7 @@ _start:
 	li	t0, 3 << 11 | 1 << 7
 	csrs	mstatus, t0
 
-    j       start_kernel            // hart 0 jump to c
+    j       kernel_init            // hart 0 jump to c
 
 park:
     wfi
