@@ -1,7 +1,8 @@
 
 // os.h
 
-#pragma once
+#ifndef _OS_H
+#define _OS_H
 
 #include "memory.h"
 #include "task.h"
@@ -43,3 +44,6 @@ void spin_unlock(void);
 /* 软件定时器 */
 timer_ptr timer_create(void (*callback)(void), void* arg, uint32_t timeout);
 void      timer_delete(timer_ptr timer);
+
+
+#endif // _OS_H

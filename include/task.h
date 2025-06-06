@@ -1,7 +1,8 @@
 
 // task.h
 
-#pragma once
+#ifndef _TASK_H
+#define _TASK_H
 
 #include "typedefs.h"
 
@@ -49,3 +50,6 @@ struct task_context
 
 
 typedef struct task_context* task_context_ptr;
+
+
+#endif // _TASK_H
