@@ -1,11 +1,10 @@
 
-// printk.c
+// print.c
 
 #include "os.h"
 
 #include "io.h"
 #include "typedefs.h"
-
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -155,7 +154,7 @@ _vprintk(const char* s, va_list vl)
 }
 
 uint32_t
-printk(const char* s, ...)
+print(const char* s, ...)
 {
     uint32_t res = 0;
     va_list  vl;
@@ -168,8 +167,8 @@ printk(const char* s, ...)
 void
 panic(char* s)
 {
-    printk("panic: ");
-    printk(s);
-    printk("\n");
+    print("panic: ");
+    print(s);
+    print("\n");
     while(1);
 }

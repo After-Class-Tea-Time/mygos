@@ -6,6 +6,8 @@
 /ignore
 /helps
 
+/gdbinit
+
 out
 
 .idea

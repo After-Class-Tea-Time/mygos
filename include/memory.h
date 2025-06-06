@@ -1,7 +1,8 @@
 
 // memory.h
 
-#pragma once
+#ifndef _MEMORY_H
+#define _MEMORY_H
 
 #include "typedefs.h"
 
@@ -32,3 +33,6 @@ typedef struct Page* page_ptr; // 页面指针类型
 #define PAGE_ORDER 12                // 页面大小的对数
 #define PAGE_TAKEN (uint8_t)(1 << 0) // 页面是否使用
 #define PAGE_LAST (uint8_t)(1 << 1)  // 是否是一个连续页面的最后一页
+
+
+#endif // _MEMORY_H
