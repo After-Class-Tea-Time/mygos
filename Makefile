@@ -3,7 +3,7 @@
 # 汇编文件（.S）和 C 文件（.c）分别存储在不同的变量中
 
 SRCS_ASM += ./src/start.S
-# SRCS_ASM += ./src/memory/memory.S
+SRCS_ASM += ./src/mem/memory.S
 # SRCS_ASM += ./src/trap/entry.S
 
 
@@ -11,7 +11,7 @@ SRCS_ASM += ./src/start.S
 SRCS_C += ./src/main.c
 
 SRCS_C += ./src/io/uart.c
-# SRCS_C += ./src/io/printf.c
+SRCS_C += ./src/io/print.c
 # SRCS_C += ./src/io/plic.c
 # SRCS_C += ./src/io/trap_handler.c
 
@@ -41,6 +41,7 @@ INCLUDE_DIRS += ./include/
 
 # 是否使用链接脚本（默认是 true）
 USE_LINKER_SCRIPT ?= true
+# USE_LINKER_SCRIPT = false
 LDFILE = ./os.ld
 # LDFILE = ./link_script_riscv.ld
 LDFILE_GENERATED = ${LDFILE}.generated
