@@ -22,6 +22,11 @@ _start:
     bltu    a0, a1, 1b      // 如果 a0 小于 a1，则跳转回标签 1，继续清零下一个 4 字节的内存地址。
 
 2:
+    // 设置栈空间，栈 **从高地址向低地址增长** ，所以把 sp 指向栈空间的末尾
+    slli    t0, t0, 10              // shift left the hart id by 1024
+    la      sp, stacks + STACK_SIZE // 将初始堆栈指针设置为第一个堆栈空间的末尾
+    add     sp, sp, t0              // 根据 hart id 偏移到对应的 hart 的堆栈空间
+
     /*/
      * 在 start_kernel 结束时，schedule() 将调用 MRET 切换到第一个任务，因此在这里准备 mstatus 。
      * 注意：最好不要假设 mstatus 的初始值为零。
@@ -36,5 +41,11 @@ _start:
 park:
     wfi
     j       park
+
+// In the standard RISC-V calling convention, the stack pointer sp is always 16-byte aligned.
+// 在标准 RISC-V 调用约定中，堆栈指针 sp 始终是 16 字节对齐的。
+.balign 16
+stacks:
+.skip CPU_STACK_SIZE * MAXNUM_CPU       // allocate space for all the harts stacks // 为所有 hart 分配堆栈空间
 
 .end                                // End of file
