@@ -51,6 +51,14 @@ print_memory_info()
 }
 
 
+void
+END()
+{
+    printk("Press Ctrl-A and then X to exit QEMU\n");
+    while(1); // stop here!
+}
+
+
 __attribute__((section(".boot.text"))) void
 kernel_init()
 {
@@ -65,5 +73,6 @@ kernel_init()
 
     uart_puts("\nloop...\n");
     uart_puts(LINE);
-    while(1); // stop here!
+
+    END();
 }

@@ -41,6 +41,7 @@ INCLUDE_DIRS += ./include/
 
 # 是否使用链接脚本（默认是 true）
 USE_LINKER_SCRIPT ?= true
+# USE_LINKER_SCRIPT = false
 LDFILE = ./os.ld
 # LDFILE = ./link_script_riscv.ld
 LDFILE_GENERATED = ${LDFILE}.generated
