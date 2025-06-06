@@ -171,6 +171,38 @@ ${OUTPUT_PATH}/%.o : %.S
 	${CC} ${DEFS} ${CFLAGS} -c -o $@ $<
 
 
+# 打印帮助
+.PHONY : help
+help:
+	@echo "Makefile for RISC-V OS"
+	@echo "Usage:"
+	@echo "  make all       - Build the OS (default)"
+	@echo "  make clean     - Clean build files"
+	@echo "  make run       - Run the OS in QEMU"
+	@echo "  make crun      - Clean and run the OS in QEMU"
+	@echo "  make debug     - Debug the OS with GDB"
+	@echo "  make code      - Print assembly code"
+	@echo "  make ocode     - Save assembly code to ./ignore/code.txt"
+
+
+# 打印汇编
+.PHONY : code
+code: all
+	@${OBJDUMP} -S ${ELF} | less
+
+
+# 将汇编保存到 ./ignore/code.txt
+ocode: all
+	@${OBJDUMP} -S ${ELF} | less > ./ignore/code.txt
+
+
+# 清理
+.PHONY : clean
+clean:
+	@${RM} ${OUTPUT_PATH}
+
+
+# 运行
 run: all
 	@${QEMU} -M ? | grep virt >/dev/null || exit
 	@echo "Press Ctrl-A and then X to exit QEMU"
@@ -178,20 +210,14 @@ run: all
 	@${QEMU} ${QFLAGS} -kernel ${ELF}
 
 
+# 清理并运行
+crun: clean run
+
+
+# 调试
 .PHONY : debug
 debug: all
 	@echo "Press Ctrl-C and then input 'quit' to exit GDB and QEMU"
 	@echo "-------------------------------------------------------"
 	@${QEMU} ${QFLAGS} -kernel ${ELF} -s -S &
 	@${GDB} ${ELF} -q -x ${GDBINIT}
-
-
-.PHONY : code
-code: all
-	@${OBJDUMP} -S ${ELF} | less > ./ignore/code.txt
-
-
-.PHONY : clean
-clean:
-	@${RM} ${OUTPUT_PATH}
-
